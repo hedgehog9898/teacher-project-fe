@@ -22,3 +22,6 @@ logs
 .env
 .env.*
 !.env.example
+
+# API temp files
+types/api-schema.json
