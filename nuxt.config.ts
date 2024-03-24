@@ -1,31 +1,43 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import vuetify, { transformAssetUrls } from "vite-plugin-vuetify";
+
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
-      apiHost: process.env.API_HOST
-    }
+      apiHost: process.env.API_HOST,
+    },
   },
   ssr: false,
   nitro: {
     devProxy: {
-      'http://localhost:5000/api': {
-        target: 'http://localhost:5000/api',
-        changeOrigin: true
-      }
-    }
+      "/api": {
+        target: "http://localhost:5000/api",
+        changeOrigin: true,
+      },
+    },
+  },
+  build: {
+    transpile: ["vuetify"],
   },
   devtools: { enabled: true },
   typescript: {
     typeCheck: true,
   },
-  modules: ["@pinia/nuxt", "@nuxt/test-utils/module", "nuxt-primevue", "nuxt-security"],
-  primevue: {
-    components: {
-      prefix: 'Prime'
+  modules: [
+    (_options, nuxt) => {
+      nuxt.hooks.hook("vite:extendConfig", (config) => {
+        // @ts-expect-error
+        config.plugins.push(vuetify());
+      });
     },
-    directives: {
-      prefix: 'prime'
-    }
+    "@pinia/nuxt",
+    "@nuxt/test-utils/module",
+    "nuxt-security",
+  ],
+  vite: {
+    vue: {
+      template: {
+        transformAssetUrls,
+      },
+    },
   },
-  css: ['primevue/resources/themes/aura-light-green/theme.css']
 });

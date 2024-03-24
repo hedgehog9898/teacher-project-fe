@@ -15,6 +15,7 @@ export async function useIFetch<T>(
       ? { Authorization: `Bearer ${accessTokenCookie.value}` }
       : {},
     onResponse: async ({ response, options }) => {
+      // TODO: Implement refresh token logic here
       if (response.status === 401) {
         try {
           const newToken = await refreshToken();
