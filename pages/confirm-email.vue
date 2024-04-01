@@ -6,7 +6,6 @@ const { confirmEmail } = useAuthStore();
 const { user, confirmEmailError } = storeToRefs(useAuthStore());
 
 onMounted( async () => {
-  console.log('route.query', route.query.token);
   if ( route.query.token ) {
     await confirmEmail({ confirmationToken: String(route.query.token) });
   }
