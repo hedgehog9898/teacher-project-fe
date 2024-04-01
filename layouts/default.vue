@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <VApp>
-      <VMain>
-        <slot />
-      </VMain>
-    </VApp>
-  </div>
+  <VApp>
+    <VMain>
+      <slot />
+    </VMain>
+  </VApp>
 </template>
+
 <script setup lang="ts">
 </script>

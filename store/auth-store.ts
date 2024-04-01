@@ -4,12 +4,15 @@ import { useIFetch } from '~/composables/useIFetch';
 import { useCookie } from '#imports';
 import { FetchError } from 'ofetch';
 
-// Open API Schemas
+// Open API Payload Schemas
+type SignInSchema = components['schemas']['SignInDto'];
+type SignUpSchema = components['schemas']['SignUpDto'];
+type ConfirmEmailSchema = components['schemas']['ConfirmEmailDto'];
+
+// Open API Responses Schemas
 type UserInfo = components['schemas']['AuthResponseUserMapper'];
 type AuthUserResponse = components['schemas']['AuthResponseMapper'];
 type SighUpResponse = components['schemas']['MessageMapper'];
-type SignInSchema = components['schemas']['SignInDto'];
-type SignUpSchema = components['schemas']['SignUpDto'];
 
 
 export const useAuthStore = defineStore('auth', () => {
@@ -26,7 +29,10 @@ export const useAuthStore = defineStore('auth', () => {
 
     accessTokenCookie.value = data.value?.accessToken ?? null;
     user.value = data.value?.user;
-    authError.value = error.value;
+
+    if ( error ) {
+      authError.value = error.value;
+    }
   }
 
   const signUpError = ref<string>();
@@ -42,5 +48,21 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return { user, authError, signUpError, login, signUp };
+  const confirmEmailError = ref<string>();
+  async function confirmEmail ({ confirmationToken }: ConfirmEmailSchema) {
+    const accessTokenCookie = useCookie('accessToken');
+    const { data, error } = await useIFetch<AuthUserResponse>('/auth/confirm-email', {
+      method: 'POST',
+      body: { confirmationToken }
+    });
+
+    accessTokenCookie.value = data.value?.accessToken ?? null;
+    user.value = data.value?.user;
+
+    if ( error.value?.data?.message?.[0] ) {
+      confirmEmailError.value = 'Your confirmation email token is invalid';
+    }
+  }
+
+  return { user,  login, signUp, confirmEmail, authError, signUpError, confirmEmailError };
 });
