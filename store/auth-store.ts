@@ -7,18 +7,21 @@ import { FetchError } from 'ofetch';
 // Open API Schemas
 type UserInfo = components['schemas']['AuthResponseUserMapper'];
 type AuthUserResponse = components['schemas']['AuthResponseMapper'];
+type SighUpResponse = components['schemas']['MessageMapper'];
+type SignInSchema = components['schemas']['SignInDto'];
+type SignUpSchema = components['schemas']['SignUpDto'];
 
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref<UserInfo|undefined>();
   const authError = ref<FetchError|null>();
 
-  async function login (username: string, password: string) {
+  async function login ({ emailOrUsername, password }: SignInSchema) {
     const accessTokenCookie = useCookie('accessToken');
     const { data, error } = await useIFetch<AuthUserResponse>('/auth/sign-in',
       {
         method: 'POST',
-        body: { emailOrUsername: username, password }
+        body: { emailOrUsername, password }
       });
 
     accessTokenCookie.value = data.value?.accessToken ?? null;
@@ -26,5 +29,18 @@ export const useAuthStore = defineStore('auth', () => {
     authError.value = error.value;
   }
 
-  return { user, authError, login };
+  const signUpError = ref<string>();
+  async function signUp ({ name, email, password, repeatedPassword }: SignUpSchema) {
+    const { data, error } = await useIFetch<SighUpResponse>('/auth/sign-up',
+      {
+        method: 'POST',
+        body: { name, email, password, repeatedPassword }
+      });
+
+    if ( error ) {
+      signUpError.value = error.value?.data?.message ?? 'Something went wrong';
+    }
+  }
+
+  return { user, authError, signUpError, login, signUp };
 });

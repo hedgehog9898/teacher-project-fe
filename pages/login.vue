@@ -9,26 +9,11 @@
             <VForm ref="loginForm" class="mt-6" @submit.prevent="submit">
               <div class="mt-1">
                 <label class="label" for="email">Email</label>
-                <VTextField
-                  id="email"
-                  v-model="email"
-                  :rules="[ruleRequired, ruleEmail]"
-                  placeholder="test@mail.de"
-                  prepend-inner-icon="mdi-email"
-                  name="email"
-                  type="email"
-                />
+                <EmailField v-model="email" />
               </div>
               <div class="mt-1">
                 <label class="label" for="password">Password</label>
-                <VTextField
-                  id="password"
-                  v-model="password"
-                  :rules="[ruleRequired, rulePasswordLength]"
-                  prepend-inner-icon="mdi-lock"
-                  name="password"
-                  type="password"
-                />
+                <PasswordField v-model="password" />
               </div>
               <div class="mt-5">
                 <VBtn
@@ -71,21 +56,21 @@
 </template>
 
 <script setup lang="ts">
-import { useAuthStore } from "~/store/auth-store";
-import { useFormRules } from "~/composables/useFormRules";
+import PasswordField from '~/components/common/PasswordField.vue';
+import EmailField from '~/components/common/EmailField.vue';
+import { useAuthStore } from '~/store/auth-store';
 
 const authStore = useAuthStore();
-const { ruleRequired, ruleEmail, rulePasswordLength } = useFormRules();
 
 const loginForm = ref();
-const email = ref("");
-const password = ref("");
+const email = ref('');
+const password = ref('');
 
 async function submit() {
   const { valid } = await loginForm.value?.validate() ?? { valid: false };
 
   if ( valid ) {
-    await authStore.login(email.value, password.value);
+    await authStore.login({ emailOrUsername: email.value, password: password.value });
   }
 }
 </script>
