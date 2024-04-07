@@ -6,15 +6,15 @@ import { createVuetify, type ThemeDefinition } from 'vuetify';
 const lightTheme: ThemeDefinition = {
   dark: false,
   colors: {
-    background: '#EBF1F4',
-    surface: '#660066',
-    primary: '#660066',
-    secondary: '#300047',
-    accent: '#EABFFF',
-    error: '#f44336',
-    info: '#2196F3',
-    success: '#4caf50',
-    warning: '#fb8c00',
+    background: '#060813',
+    surface: '#060813',
+    primary: '#060813',
+    secondary: '#0E0E27',
+    accent: '#A36AFF',
+    error: '#FF79A7',
+    info: '#5E9EFF',
+    success: '#61FF5E',
+    warning: '#FFAC5E',
   },
 };
 

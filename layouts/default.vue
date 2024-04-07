@@ -1,9 +1,7 @@
 <template>
-  <VApp>
-    <VMain>
-      <slot />
-    </VMain>
-  </VApp>
+  <main>
+    <slot />
+  </main>
 </template>
 
 <script setup lang="ts">

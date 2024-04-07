@@ -18,6 +18,9 @@ export default defineNuxtConfig({
   build: {
     transpile: ["vuetify"],
   },
+  css: [
+    '@/assets/styles/index.scss'
+  ],
   devtools: { enabled: true },
   typescript: {
     typeCheck: true,
@@ -32,7 +35,13 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxt/test-utils/module",
     "nuxt-security",
+    "@nuxtjs/google-fonts"
   ],
+  googleFonts: {
+    families: {
+      Roboto: true
+    }
+  },
   vite: {
     vue: {
       template: {

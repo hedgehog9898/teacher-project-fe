@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import PasswordField from '~/components/common/PasswordField.vue';
-import EmailField from '~/components/common/EmailField.vue';
+import PasswordField from '~/components/common/fields/PasswordField.vue';
+import EmailField from '~/components/common/fields/EmailField.vue';
 
 import { useAuthStore } from '~/store/auth-store';
 import { useFormRules } from '~/composables/useFormRules';

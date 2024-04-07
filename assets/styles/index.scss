@@ -1,0 +1,8 @@
+@import "reset";
+@import "colors";
+
+html {
+  background-color: rgb(var(--v-theme-background));
+  color: $font-color;
+  font-family: "Roboto", sans-serif;
+}
